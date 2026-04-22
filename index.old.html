@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>給汶汶小公主的生日驚喜 ❤️</title>
+    <style>
+        /* 引入暖色調字體 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Zhi+Mang+Xing&display=swap');
+
+        :root {
+            --primary-pink: #ff8da1;
+            --soft-pink: #ffe6ea;
+            --text-color: #5a4a42;
+            --accent-red: #d85c7b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--soft-pink) 0%, #ffc0cb 100%);
+            font-family: 'Noto Serif TC', serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* 飄落愛心背景 */
+        #hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--primary-pink);
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-10vh) rotate(0deg); }
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 650px;
+            padding: 20px;
+        }
+
+        /* 信封樣式 */
+        .envelope-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(216, 92, 123, 0.2);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .envelope-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(216, 92, 123, 0.3);
+        }
+
+        .envelope-icon {
+            font-size: 100px;
+            display: block;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .click-me {
+            font-size: 1.2rem;
+            color: var(--accent-red);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* 信件內容樣式 */
+        .letter-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            line-height: 2;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .letter-content.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1 {
+            font-family: 'Zhi Mang Xing', cursive;
+            font-size: 2.5rem;
+            color: var(--accent-red);
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .memory-section {
+            margin: 30px 0;
+            padding-left: 20px;
+            border-left: 3px solid var(--soft-pink);
+        }
+
+        .highlight {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        .photo-area {
+            width: 100%;
+            height: 250px;
+            background: #fdf0f2;
+            border-radius: 10px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed var(--primary-pink);
+            color: var(--primary-pink);
+            font-style: italic;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 50px;
+            font-size: 1.2rem;
+        }
+
+        .signature .name {
+            font-family: 'Zhi Mang Xing', cursive;
+            font-size: 2rem;
+            color: var(--accent-red);
+        }
+
+        /* 滾動條美化 */
+        .letter-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .letter-content::-webkit-scrollbar-thumb {
+            background: var(--soft-pink);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .letter-content { padding: 30px 20px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <div class="envelope-container" id="envelope" onclick="openLetter()">
+            <span class="envelope-icon">💌</span>
+            <div class="click-me">TO: 汶汶小公主<br>(點擊開啟驚喜)</div>
+        </div>
+
+        <div class="letter-content" id="letter">
+            <h1>29 歲生日快樂！🎂</h1>
+            
+            <p>親愛的汶汶小公主（我最愛的大寶貝）：</p>
+            
+            <p>不管是 27 歲還是 29 歲，在 32 歲的 <span class="highlight">DK 桑</span> 眼裡，妳永遠都是那個需要被寵著的小朋友。未來的路，我會一直在前面幫妳探路、好好罩著妳！</p>
+            
+            <div class="memory-section">
+                <p>回想這一年多，心裡真的滿滿感動。謝謝妳在 <span class="highlight">台中遠距離</span> 的那半年，每週五都不辭辛勞地下來陪我。那時我因為試用期考核壓力大、愛生氣，謝謝妳始終溫柔地陪我度過難關。不管是日月潭的散步還是鹿港的龍舟，只要有妳在，哪裡都好玩。</p>
+            </div>
+
+            <div class="memory-section">
+                <p>今年 1 月的 <span class="highlight">日本之旅</span>，是我第一次挑戰自由行。謝謝妳給我滿滿安全感，陪我一起規畫、一起看雪。妳說過：「看雪景就是要跟喜歡的人一起看」，那個人絕對就是妳了。</p>
+            </div>
+
+            <div class="memory-section">
+                <p>還有哥哥婚禮那天，我把人生 <span class="highlight">第一次穿西裝</span> 的帥氣樣子獻給了妳。看著妳體貼地幫忙、順利融入我的家人，爸媽跟親戚私底下都超級喜歡妳，我真的感到很驕傲。</p>
+            </div>
+
+            <p>從阿里山升級的「貴賓室」驚喜，到今天的海港下午茶與手作蛋糕，我只想盡我所能把最好的都給妳。身為講求 CP 值的理科男，妳就是我人生中 <span class="highlight">報酬率最高的決定</span>！</p>
+
+            <div class="photo-area">
+                📷 這裡可以放一張我們在阿里山的合照
+            </div>
+
+            <p>未來我會繼續當那個幫妳盛滿盤子、隨時準備開瓶蓋，還要帶著小寶貝一起運動的大寶貝！</p>
+
+            <p>如果要給這份愛加上期限，我依然希望是一萬年！</p>
+
+            <div class="signature">
+                愛妳的 <span class="name">DK 桑</span> 敬上 ❤️<br>
+                2026.04.21
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 開信功能
+        function openLetter() {
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            
+            envelope.style.transform = 'translateY(-100px) scale(0)';
+            envelope.style.opacity = '0';
+            
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                letter.classList.add('active');
+            }, 500);
+        }
+
+        // 產生動態愛心
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            
+            const startX = Math.random() * 100;
+            const size = Math.random() * 15 + 10;
+            const duration = Math.random() * 3 + 4;
+            
+            heart.style.left = startX + 'vw';
+            heart.style.fontSize = size + 'px';
+            heart.style.animationDuration = duration + 's';
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
