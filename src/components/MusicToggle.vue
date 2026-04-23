@@ -341,7 +341,7 @@ function handleExpandToggle() {
 /* ─── Responsive ─── */
 @media (max-width: 600px) {
   .music-toggle {
-    bottom: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
     right: 16px;
   }
 

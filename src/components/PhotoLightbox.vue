@@ -354,16 +354,42 @@ function handleBackdropClick(e: MouseEvent) {
 /* ─── Responsive ─── */
 @media (max-width: 600px) {
   .lightbox__nav {
-    display: none;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .lightbox__nav--prev {
+    left: 8px;
+  }
+
+  .lightbox__nav--next {
+    right: 8px;
   }
 
   .lightbox__image-wrap {
-    max-width: 95vw;
+    max-width: 96vw;
+    max-height: 65vh;
+  }
+
+  .lightbox__image {
+    max-height: 65vh;
+    border-radius: 6px;
   }
 
   .lightbox__close {
-    top: 12px;
+    top: max(12px, env(safe-area-inset-top, 12px));
     right: 12px;
+  }
+
+  .lightbox__counter {
+    top: max(16px, env(safe-area-inset-top, 16px));
+    font-size: 0.8rem;
+  }
+
+  .lightbox__caption {
+    font-size: 1rem;
+    margin-top: 14px;
   }
 }
 </style>

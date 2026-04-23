@@ -13,12 +13,14 @@ const emit = defineEmits<{
   'photo-click': [index: number]
 }>()
 
+const base = import.meta.env.BASE_URL
+
 const photos: GalleryPhoto[] = [
-  { src: '/photos/japan-snow.jpg', alt: '日本雪景合照', caption: '初雪的浪漫', span: 'wide' },
-  { src: '/photos/wedding.jpg', alt: '婚禮合照', caption: '最帥的那一天', span: 'tall' },
-  { src: '/photos/temple.jpg', alt: '寺廟合照', caption: '台中的美好時光' },
-  { src: '/photos/dragon-boat.jpg', alt: '龍舟合照', caption: '鹿港的夏夜' },
-  { src: '/photos/adventure.jpg', alt: '戶外冒險合照', caption: '一起登頂的勇氣', span: 'tall' },
+  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫', span: 'wide' },
+  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天', span: 'tall' },
+  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
+  { src: `${base}photos/adventure.jpg`, alt: '戶外冒險合照', caption: '一起登頂的勇氣', span: 'tall' },
 ]
 
 defineExpose({ photos })
@@ -171,16 +173,24 @@ const { isRevealed } = useScrollReveal(galleryRef, { threshold: 0.08 })
   transform: translateY(0);
 }
 
+/* Touch devices: always show captions */
+@media (hover: none) {
+  .gallery__caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .gallery {
-    padding: 60px 20px;
+    padding: 60px 16px;
   }
 
   .gallery__grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 180px;
-    gap: 12px;
+    gap: 10px;
   }
 
   .gallery__item--wide {
@@ -190,11 +200,26 @@ const { isRevealed } = useScrollReveal(galleryRef, { threshold: 0.08 })
   .gallery__heading {
     font-size: 1.8rem;
   }
+
+  .gallery__sub {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .gallery__caption {
+    font-size: 1rem;
+    padding: 14px;
+  }
 }
 
 @media (max-width: 480px) {
   .gallery__grid {
-    grid-auto-rows: 150px;
+    grid-auto-rows: 140px;
+    gap: 8px;
+  }
+
+  .gallery__item {
+    border-radius: 10px;
   }
 }
 </style>

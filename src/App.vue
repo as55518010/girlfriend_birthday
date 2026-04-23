@@ -11,6 +11,9 @@ import { useAudioPlayer } from './composables/useAudioPlayer'
 import { useLightbox, type LightboxPhoto } from './composables/useLightbox'
 import { useReducedMotion } from './composables/useReducedMotion'
 
+/* ─── Base URL (for GitHub Pages) ─── */
+const base = import.meta.env.BASE_URL
+
 /* ─── State ─── */
 const isOpened = shallowRef(false)
 const showContent = shallowRef(false)
@@ -20,7 +23,7 @@ const { isReduced } = useReducedMotion()
 
 /* ─── Audio ─── */
 const bgMusic = useAudioPlayer({
-  src: '/audio/bg-romantic.mp3',
+  src: `${base}audio/bg-romantic.mp3`,
   loop: true,
   initialVolume: 0.35,
   fadeDuration: 1200,
@@ -31,15 +34,15 @@ const lightbox = useLightbox()
 
 /* All photos in the page (for lightbox navigation) */
 const allPhotos: LightboxPhoto[] = [
-  { src: '/photos/dragon-boat.jpg', alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
-  { src: '/photos/japan-snow.jpg', alt: '日本雪景合照', caption: '日本看雪的約定' },
-  { src: '/photos/wedding.jpg', alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻' },
-  { src: '/photos/temple.jpg', alt: '寺廟合照', caption: '台中的美好時光' },
-  { src: '/photos/japan-snow.jpg', alt: '日本雪景合照', caption: '初雪的浪漫' },
-  { src: '/photos/wedding.jpg', alt: '婚禮合照', caption: '最帥的那一天' },
-  { src: '/photos/temple.jpg', alt: '寺廟合照', caption: '台中的美好時光' },
-  { src: '/photos/dragon-boat.jpg', alt: '龍舟合照', caption: '鹿港的夏夜' },
-  { src: '/photos/adventure.jpg', alt: '戶外冒險合照', caption: '一起登頂的勇氣' },
+  { src: `${base}photos/dragon-boat.jpg`, alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
+  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '日本看雪的約定' },
+  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻' },
+  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫' },
+  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天' },
+  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
+  { src: `${base}photos/adventure.jpg`, alt: '戶外冒險合照', caption: '一起登頂的勇氣' },
 ]
 
 /* Memory section images are indices 0–3, gallery images are 4–8 */
@@ -68,7 +71,7 @@ function handleEnvelopeOpen() {
 function handleEnvelopeSfx(type: string) {
   if (isReduced.value) return
   if (type === 'envelope-open') {
-    bgMusic.playSfx('/audio/sfx-envelope.mp3', 0.25)
+    bgMusic.playSfx(`${base}audio/sfx-envelope.mp3`, 0.25)
   }
 }
 
@@ -185,7 +188,7 @@ onUnmounted(() => {
           :style="{ transform: `translateY(${parallaxY}px)` }"
         >
           <img
-            src="/photos/adventure.jpg"
+            :src="`${base}photos/adventure.jpg`"
             alt="戶外冒險合照"
             loading="eager"
             fetchpriority="high"
@@ -225,7 +228,7 @@ onUnmounted(() => {
       <!-- Memory: 台中遠距離 -->
       <MemorySection
         title="台中遠距離的半年"
-        image-src="/photos/dragon-boat.jpg"
+        :image-src="`${base}photos/dragon-boat.jpg`"
         image-alt="鹿港龍舟夜晚合照"
         @image-click="openMemoryPhoto(0)"
       >
@@ -242,7 +245,7 @@ onUnmounted(() => {
       <!-- Memory: 日本之旅 -->
       <MemorySection
         title="日本看雪的約定"
-        image-src="/photos/japan-snow.jpg"
+        :image-src="`${base}photos/japan-snow.jpg`"
         image-alt="日本雪景合照"
         reverse
         @image-click="openMemoryPhoto(1)"
@@ -260,7 +263,7 @@ onUnmounted(() => {
       <!-- Memory: 婚禮 -->
       <MemorySection
         title="哥哥婚禮的驕傲時刻"
-        image-src="/photos/wedding.jpg"
+        :image-src="`${base}photos/wedding.jpg`"
         image-alt="婚禮合照"
         @image-click="openMemoryPhoto(2)"
       >
@@ -277,7 +280,7 @@ onUnmounted(() => {
       <!-- Memory: 台中時光 -->
       <MemorySection
         title="台中的美好時光"
-        image-src="/photos/temple.jpg"
+        :image-src="`${base}photos/temple.jpg`"
         image-alt="寺廟合照"
         reverse
         @image-click="openMemoryPhoto(3)"
@@ -559,15 +562,34 @@ onUnmounted(() => {
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
   .hero {
-    min-height: 500px;
+    min-height: 100svh;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .hero__scroll-hint {
+    margin-top: 30px;
   }
 
   .prose-section {
-    padding: 50px 24px;
+    padding: 40px 20px;
+  }
+
+  .prose-section__text {
+    font-size: 1.05rem;
+    line-height: 2;
   }
 
   .promise {
-    padding: 50px 24px;
+    padding: 40px 20px;
+  }
+
+  .promise__text {
+    font-size: 1rem;
+    line-height: 2;
   }
 
   .promise__highlight {
@@ -576,6 +598,10 @@ onUnmounted(() => {
 
   .promise__accent {
     font-size: 1.8rem;
+  }
+
+  .section-divider {
+    padding: 6px 0;
   }
 }
 </style>
