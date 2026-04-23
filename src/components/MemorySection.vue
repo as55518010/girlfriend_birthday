@@ -112,7 +112,17 @@ const { isRevealed } = useScrollReveal(sectionRef)
   transform: scale(1.02) rotate(-0.5deg);
   box-shadow:
     0 28px 65px rgba(100, 40, 50, 0.18),
-    0 8px 24px rgba(100, 40, 50, 0.1);
+    0 8px 24px rgba(100, 40, 50, 0.1),
+    0 0 30px rgba(251, 113, 133, 0.2);
+}
+
+.memory--revealed .memory__image-frame {
+  animation: frame-glow-pulse 3s 0.5s ease-in-out 2;
+}
+
+@keyframes frame-glow-pulse {
+  0%, 100% { box-shadow: 0 20px 50px rgba(100,40,50,0.12), 0 6px 16px rgba(100,40,50,0.06); }
+  50% { box-shadow: 0 20px 50px rgba(100,40,50,0.12), 0 6px 16px rgba(100,40,50,0.06), 0 0 40px rgba(251,113,133,0.25); }
 }
 
 .memory__image-frame img {

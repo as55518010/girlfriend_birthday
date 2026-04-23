@@ -7,9 +7,11 @@ import PhotoGallery from './components/PhotoGallery.vue'
 import SignatureBlock from './components/SignatureBlock.vue'
 import MusicToggle from './components/MusicToggle.vue'
 import PhotoLightbox from './components/PhotoLightbox.vue'
+import FireworksOverlay from './components/FireworksOverlay.vue'
 import { useAudioPlayer } from './composables/useAudioPlayer'
 import { useLightbox, type LightboxPhoto } from './composables/useLightbox'
 import { useReducedMotion } from './composables/useReducedMotion'
+import { useSoundEffects } from './composables/useSoundEffects'
 
 /* ─── Base URL (for GitHub Pages) ─── */
 const base = import.meta.env.BASE_URL
@@ -32,6 +34,12 @@ const bgMusic = useAudioPlayer({
 /* ─── Lightbox ─── */
 const lightbox = useLightbox()
 
+/* ─── Sound Effects ─── */
+const sfx = useSoundEffects()
+
+/* ─── Fireworks ─── */
+const showFireworks = shallowRef(false)
+
 /* All photos in the page (for lightbox navigation) */
 const allPhotos: LightboxPhoto[] = [
   { src: `${base}photos/dragon-boat.jpg`, alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
@@ -42,16 +50,18 @@ const allPhotos: LightboxPhoto[] = [
   { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天' },
   { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
   { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
-  { src: `${base}photos/adventure.jpg`, alt: '戶外冒險合照', caption: '一起登頂的勇氣' },
+  { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣' },
 ]
 
 /* Memory section images are indices 0–3, gallery images are 4–8 */
 function openMemoryPhoto(memoryIndex: number) {
   lightbox.open(allPhotos, memoryIndex)
+  if (!isReduced.value) sfx.playSparkle()
 }
 
 function openGalleryPhoto(galleryIndex: number) {
   lightbox.open(allPhotos, 4 + galleryIndex)
+  if (!isReduced.value) sfx.playSparkle()
 }
 
 const lightboxTotal = computed(() => allPhotos.length)
@@ -61,17 +71,31 @@ function handleEnvelopeOpen() {
   isOpened.value = true
   setTimeout(() => {
     showContent.value = true
+    // Play hero reveal chime after content appears
+    if (!isReduced.value) {
+      sfx.playHeroReveal()
+    }
   }, 400)
   // Start music after user's first interaction (respects autoplay policy)
   if (!isReduced.value) {
     bgMusic.play()
   }
+  // Trigger fireworks after a beat
+  setTimeout(() => {
+    showFireworks.value = true
+    if (!isReduced.value) sfx.playFireworks()
+  }, 2000)
+  // Second firework burst
+  setTimeout(() => {
+    if (!isReduced.value) sfx.playFireworks()
+  }, 3500)
 }
 
 function handleEnvelopeSfx(type: string) {
   if (isReduced.value) return
   if (type === 'envelope-open') {
-    bgMusic.playSfx(`${base}audio/sfx-envelope.mp3`, 0.25)
+    // Dramatic Web Audio synth burst instead of missing mp3
+    sfx.playEnvelopeOpen()
   }
 }
 
@@ -80,21 +104,40 @@ interface ClickHeart {
   id: number
   x: number
   y: number
+  emoji: string
+  size: number
+  drift: number
 }
 
 const clickHearts = shallowRef<ClickHeart[]>([])
 let heartIdCounter = 0
+
+const heartPool = ['💗', '💕', '❤️', '🩷', '💖', '✨', '💫']
 
 function spawnClickHeart(e: MouseEvent) {
   if (!showContent.value || isReduced.value) return
   // Don't spawn on interactive elements
   const target = e.target as HTMLElement
   if (target.closest('button, a, [role="button"], input, .lightbox__backdrop')) return
-  const id = ++heartIdCounter
-  const heart: ClickHeart = { id, x: e.clientX, y: e.clientY }
-  clickHearts.value = [...clickHearts.value, heart]
+  // Spawn 3–5 hearts per click for more impact
+  const count = 3 + Math.floor(Math.random() * 3)
+  const newHearts: ClickHeart[] = []
+  for (let i = 0; i < count; i++) {
+    const id = ++heartIdCounter
+    newHearts.push({
+      id,
+      x: e.clientX + (Math.random() - 0.5) * 40,
+      y: e.clientY + (Math.random() - 0.5) * 30,
+      emoji: heartPool[Math.floor(Math.random() * heartPool.length)],
+      size: 1.2 + Math.random() * 0.8,
+      drift: (Math.random() - 0.5) * 60,
+    })
+  }
+  clickHearts.value = [...clickHearts.value, ...newHearts]
+  sfx.playHeartPop()
   setTimeout(() => {
-    clickHearts.value = clickHearts.value.filter((h) => h.id !== id)
+    const ids = new Set(newHearts.map(h => h.id))
+    clickHearts.value = clickHearts.value.filter((h) => !ids.has(h.id))
   }, 1200)
 }
 
@@ -104,6 +147,35 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('click', spawnClickHeart)
+})
+
+/* ─── Section Reveal Sound Effects ─── */
+let revealObserver: IntersectionObserver | null = null
+const revealedSections = new Set<Element>()
+
+onMounted(() => {
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && !revealedSections.has(entry.target)) {
+          revealedSections.add(entry.target)
+          if (!isReduced.value) sfx.playWhoosh()
+        }
+      }
+    },
+    { threshold: 0.2 },
+  )
+
+  // Observe after content is shown
+  setTimeout(() => {
+    document.querySelectorAll('.memory, .gallery, .promise, .signature').forEach((el) => {
+      revealObserver?.observe(el)
+    })
+  }, 1000)
+})
+
+onUnmounted(() => {
+  revealObserver?.disconnect()
 })
 
 /* ─── Parallax on Hero ─── */
@@ -136,10 +208,15 @@ onUnmounted(() => {
       v-for="h in clickHearts"
       :key="h.id"
       class="click-heart"
-      :style="{ left: `${h.x}px`, top: `${h.y}px` }"
+      :style="{
+        left: `${h.x}px`,
+        top: `${h.y}px`,
+        fontSize: `${h.size}rem`,
+        '--drift': `${h.drift}px`,
+      }"
       aria-hidden="true"
     >
-      💗
+      {{ h.emoji }}
     </div>
   </Teleport>
 
@@ -178,6 +255,9 @@ onUnmounted(() => {
     @prev="lightbox.prev()"
   />
 
+  <!-- Fireworks -->
+  <FireworksOverlay v-if="showFireworks" />
+
   <!-- Letter content -->
   <Transition name="letter-in">
     <main v-if="showContent" class="letter">
@@ -189,7 +269,7 @@ onUnmounted(() => {
         >
           <img
             :src="`${base}photos/adventure.jpg`"
-            alt="戶外冒險合照"
+            alt="台南鹽山合照"
             loading="eager"
             fetchpriority="high"
             width="1080"
@@ -198,6 +278,10 @@ onUnmounted(() => {
         </div>
         <div class="hero__overlay" />
         <div class="hero__content">
+          <!-- Floating sparkles around the number -->
+          <div class="hero__sparkles" aria-hidden="true">
+            <span v-for="i in 8" :key="i" class="hero__sparkle" :style="{ '--si': i }" />
+          </div>
           <span class="hero__age">29</span>
           <h1 class="hero__title">歲生日快樂！</h1>
           <p class="hero__subtitle">
@@ -362,7 +446,6 @@ onUnmounted(() => {
 .click-heart {
   position: fixed;
   pointer-events: none;
-  font-size: 1.6rem;
   z-index: 9999;
   animation: click-heart-rise 1.2s var(--ease-out-expo) forwards;
   transform: translate(-50%, -50%);
@@ -375,11 +458,11 @@ onUnmounted(() => {
   }
   30% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(calc(-50% + var(--drift, 0px) * 0.3), -50%) scale(1.3);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, calc(-50% - 120px)) scale(0.6);
+    transform: translate(calc(-50% + var(--drift, 0px)), calc(-50% - 140px)) scale(0.4);
   }
 }
 
@@ -461,6 +544,8 @@ onUnmounted(() => {
   animation: shimmer 4s linear infinite;
   display: block;
   margin-bottom: -10px;
+  filter: drop-shadow(0 0 20px rgba(244,63,94,0.3));
+  position: relative;
 }
 
 .hero__title {
@@ -486,6 +571,37 @@ onUnmounted(() => {
   font-size: 1.4rem;
   color: var(--rose-400);
   animation: bounce-down 2s ease-in-out infinite;
+}
+
+/* Hero sparkles */
+.hero__sparkles {
+  position: absolute;
+  inset: -40px;
+  pointer-events: none;
+}
+
+.hero__sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rose-400);
+  box-shadow: 0 0 10px 3px rgba(251,113,133,0.5);
+  animation: hero-sparkle-orbit 4s calc(var(--si) * -0.5s) linear infinite;
+  opacity: 0;
+}
+
+.hero__sparkle:nth-child(odd) {
+  background: var(--champagne);
+  box-shadow: 0 0 10px 3px rgba(212,165,116,0.5);
+}
+
+@keyframes hero-sparkle-orbit {
+  0% { opacity: 0; transform: translate(0, -80px) scale(0); }
+  10% { opacity: 1; }
+  50% { opacity: 0.8; transform: translate(calc(60px * var(--si) / 4 - 60px), calc(-40px + 30px * var(--si) / 4)) scale(1); }
+  90% { opacity: 0.5; }
+  100% { opacity: 0; transform: translate(0, 80px) scale(0); }
 }
 
 @keyframes bounce-down {
@@ -518,6 +634,19 @@ onUnmounted(() => {
   color: var(--rose-300);
   font-size: 0.75rem;
   letter-spacing: 8px;
+  position: relative;
+}
+
+.section-divider span {
+  display: inline-block;
+  animation: divider-sparkle 2.5s ease-in-out infinite;
+}
+
+@keyframes divider-sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+  25% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+  50% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  75% { transform: scale(1.2) rotate(-10deg); opacity: 1; }
 }
 
 /* ─── Promise Section ─── */
@@ -557,6 +686,13 @@ onUnmounted(() => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
+  animation: accent-glow 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes accent-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(244,63,94,0.3)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 20px rgba(244,63,94,0.6)); transform: scale(1.05); }
 }
 
 /* ─── Responsive ─── */
