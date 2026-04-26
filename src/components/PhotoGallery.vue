@@ -20,7 +20,7 @@ const photos: GalleryPhoto[] = [
   { src: `${base}photos/houfeng_bikeway.jpg`, alt: '后里鐵馬道', caption: '后里馬場雙人協力車' },
   { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣', span: 'tall' },
   { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫', span: 'wide' },
-  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻', span: 'tall' },
+  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻'},
   { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台南的美好時光' },
   { src: `${base}photos/eyes_on_you.jpg`, alt: '眼中只有你', caption: '阿里山夕陽/日出下的浪漫', span: 'tall' },
   { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光', span: 'wide' },
