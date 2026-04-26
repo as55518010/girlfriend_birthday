@@ -59,7 +59,8 @@ function openMemoryPhoto(memoryIndex: number) {
 }
 
 function openGalleryPhoto(galleryIndex: number) {
-  lightbox.open(allPhotos, 4 + galleryIndex)
+  console.log(galleryIndex);
+  lightbox.open(allPhotos, galleryIndex)
   if (!isReduced.value) sfx.playSparkle()
 }
 
@@ -203,56 +204,32 @@ onUnmounted(() => {
 
   <!-- Click hearts -->
   <Teleport to="body">
-    <div
-      v-for="h in clickHearts"
-      :key="h.id"
-      class="click-heart"
-      :style="{
-        left: `${h.x}px`,
-        top: `${h.y}px`,
-        fontSize: `${h.size}rem`,
-        '--drift': `${h.drift}px`,
-      }"
-      aria-hidden="true"
-    >
+    <div v-for="h in clickHearts" :key="h.id" class="click-heart" :style="{
+      left: `${h.x}px`,
+      top: `${h.y}px`,
+      fontSize: `${h.size}rem`,
+      '--drift': `${h.drift}px`,
+    }" aria-hidden="true">
       {{ h.emoji }}
     </div>
   </Teleport>
 
   <!-- Envelope -->
   <Transition name="envelope-out">
-    <EnvelopeHero
-      v-if="!isOpened"
-      @opened="handleEnvelopeOpen"
-      @play-sfx="handleEnvelopeSfx"
-    />
+    <EnvelopeHero v-if="!isOpened" @opened="handleEnvelopeOpen" @play-sfx="handleEnvelopeSfx" />
   </Transition>
 
   <!-- Music Toggle (visible after opening) -->
   <Transition name="music-fade">
-    <MusicToggle
-      v-if="showContent"
-      :is-playing="bgMusic.isPlaying.value"
-      :is-muted="bgMusic.isMuted.value"
-      :volume="bgMusic.volume.value"
-      @toggle="bgMusic.toggle()"
-      @toggle-mute="bgMusic.toggleMute()"
-      @update:volume="bgMusic.setVolume($event)"
-    />
+    <MusicToggle v-if="showContent" :is-playing="bgMusic.isPlaying.value" :is-muted="bgMusic.isMuted.value"
+      :volume="bgMusic.volume.value" @toggle="bgMusic.toggle()" @toggle-mute="bgMusic.toggleMute()"
+      @update:volume="bgMusic.setVolume($event)" />
   </Transition>
 
   <!-- Lightbox -->
-  <PhotoLightbox
-    :is-open="lightbox.isOpen.value"
-    :photo="lightbox.currentPhoto.value"
-    :current-index="lightbox.currentIndex.value"
-    :total="lightboxTotal"
-    :has-next="lightbox.hasNext.value"
-    :has-prev="lightbox.hasPrev.value"
-    @close="lightbox.close()"
-    @next="lightbox.next()"
-    @prev="lightbox.prev()"
-  />
+  <PhotoLightbox :is-open="lightbox.isOpen.value" :photo="lightbox.currentPhoto.value"
+    :current-index="lightbox.currentIndex.value" :total="lightboxTotal" :has-next="lightbox.hasNext.value"
+    :has-prev="lightbox.hasPrev.value" @close="lightbox.close()" @next="lightbox.next()" @prev="lightbox.prev()" />
 
   <!-- Fireworks -->
   <FireworksOverlay v-if="showFireworks" />
@@ -262,18 +239,9 @@ onUnmounted(() => {
     <main v-if="showContent" class="letter">
       <!-- Birthday Hero -->
       <section ref="hero" class="hero">
-        <div
-          class="hero__bg"
-          :style="{ transform: `translateY(${parallaxY}px)` }"
-        >
-          <img
-            :src="`${base}photos/adventure.jpg`"
-            alt="台南鹽山合照"
-            loading="eager"
-            fetchpriority="high"
-            width="1080"
-            height="1440"
-          />
+        <div class="hero__bg" :style="{ transform: `translateY(${parallaxY}px)` }">
+          <img :src="`${base}photos/adventure.jpg`" alt="台南鹽山合照" loading="eager" fetchpriority="high" width="1080"
+            height="1440" />
         </div>
         <div class="hero__overlay" />
         <div class="hero__content">
@@ -309,12 +277,8 @@ onUnmounted(() => {
       </div>
 
       <!-- Memory: 台中遠距離 -->
-      <MemorySection
-        title="台中遠距離的半年"
-        :image-src="`${base}photos/dragon-boat.jpg`"
-        image-alt="鹿港龍舟夜晚合照"
-        @image-click="openMemoryPhoto(0)"
-      >
+      <MemorySection title="台中遠距離的半年" :image-src="`${base}photos/dragon-boat.jpg`" image-alt="鹿港龍舟夜晚合照"
+        @image-click="openMemoryPhoto(0)">
         <p>
           回想這一年多，心裡真的滿滿感動。謝謝妳在<strong>台中遠距離</strong>的那半年，每週五都不辭辛勞地下來陪我。那時我因為試用期考核壓力大、愛生氣，謝謝妳始終溫柔地陪我度過難關。不管是日月潭的散步還是鹿港的龍舟，只要有妳在，哪裡都好玩。
         </p>
@@ -326,13 +290,8 @@ onUnmounted(() => {
       </div>
 
       <!-- Memory: 日本之旅 -->
-      <MemorySection
-        title="日本看雪的約定"
-        :image-src="`${base}photos/japan-snow.jpg`"
-        image-alt="日本雪景合照"
-        reverse
-        @image-click="openMemoryPhoto(3)"
-      >
+      <MemorySection title="日本看雪的約定" :image-src="`${base}photos/japan-snow.jpg`" image-alt="日本雪景合照" reverse
+        @image-click="openMemoryPhoto(3)">
         <p>
           今年 1 月的<strong>日本之旅</strong>，是我第一次挑戰自由行。謝謝妳給我滿滿安全感，陪我一起規畫、一起看雪。妳說過：「看雪景就是要跟喜歡的人一起看」，那個人絕對就是妳了。
         </p>
@@ -344,12 +303,8 @@ onUnmounted(() => {
       </div>
 
       <!-- Memory: 婚禮 -->
-      <MemorySection
-        title="哥哥婚禮的驕傲時刻"
-        :image-src="`${base}photos/wedding.jpg`"
-        image-alt="婚禮合照"
-        @image-click="openMemoryPhoto(4)"
-      >
+      <MemorySection title="哥哥婚禮的驕傲時刻" :image-src="`${base}photos/wedding.jpg`" image-alt="婚禮合照"
+        @image-click="openMemoryPhoto(4)">
         <p>
           還有哥哥婚禮那天，我把人生<strong>第一次穿西裝</strong>的帥氣樣子獻給了妳。看著妳體貼地幫忙、順利融入我的家人，爸媽跟親戚私底下都超級喜歡妳，我真的感到很驕傲。
         </p>
@@ -361,13 +316,8 @@ onUnmounted(() => {
       </div>
 
       <!-- Memory: 美好時光 -->
-      <MemorySection
-        title="美好時光"
-        :image-src="`${base}photos/sweet_birthday_moments.jpg`"
-        image-alt="生日當天"
-        reverse
-        @image-click="openMemoryPhoto(7)"
-      >
+      <MemorySection title="美好時光" :image-src="`${base}photos/sweet_birthday_moments.jpg`" image-alt="生日當天" reverse
+        @image-click="openMemoryPhoto(7)">
         <p>
           從阿里山升級的「貴賓室」驚喜，到今天的海港下午茶與手作蛋糕，我只想盡我所能把最好的都給妳。身為講求 CP 值的理科男，妳就是我人生中<strong>報酬率最高的決定</strong>！
         </p>
@@ -455,10 +405,12 @@ onUnmounted(() => {
     opacity: 1;
     transform: translate(-50%, -50%) scale(0);
   }
+
   30% {
     opacity: 1;
     transform: translate(calc(-50% + var(--drift, 0px) * 0.3), -50%) scale(1.3);
   }
+
   100% {
     opacity: 0;
     transform: translate(calc(-50% + var(--drift, 0px)), calc(-50% - 140px)) scale(0.4);
@@ -498,13 +450,11 @@ onUnmounted(() => {
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(253, 242, 245, 0.3) 0%,
-    rgba(253, 232, 238, 0.6) 40%,
-    rgba(251, 207, 218, 0.85) 70%,
-    var(--cream) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(253, 242, 245, 0.3) 0%,
+      rgba(253, 232, 238, 0.6) 40%,
+      rgba(251, 207, 218, 0.85) 70%,
+      var(--cream) 100%);
 }
 
 .hero__content {
@@ -519,6 +469,7 @@ onUnmounted(() => {
     opacity: 0;
     transform: translateY(40px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -530,12 +481,10 @@ onUnmounted(() => {
   font-size: clamp(6rem, 15vw, 12rem);
   font-weight: 300;
   line-height: 1;
-  background: linear-gradient(
-    135deg,
-    var(--rose-400),
-    var(--champagne) 50%,
-    var(--rose-500)
-  );
+  background: linear-gradient(135deg,
+      var(--rose-400),
+      var(--champagne) 50%,
+      var(--rose-500));
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
@@ -543,7 +492,7 @@ onUnmounted(() => {
   animation: shimmer 4s linear infinite;
   display: block;
   margin-bottom: -10px;
-  filter: drop-shadow(0 0 20px rgba(244,63,94,0.3));
+  filter: drop-shadow(0 0 20px rgba(244, 63, 94, 0.3));
   position: relative;
 }
 
@@ -585,27 +534,53 @@ onUnmounted(() => {
   height: 6px;
   border-radius: 50%;
   background: var(--rose-400);
-  box-shadow: 0 0 10px 3px rgba(251,113,133,0.5);
+  box-shadow: 0 0 10px 3px rgba(251, 113, 133, 0.5);
   animation: hero-sparkle-orbit 4s calc(var(--si) * -0.5s) linear infinite;
   opacity: 0;
 }
 
 .hero__sparkle:nth-child(odd) {
   background: var(--champagne);
-  box-shadow: 0 0 10px 3px rgba(212,165,116,0.5);
+  box-shadow: 0 0 10px 3px rgba(212, 165, 116, 0.5);
 }
 
 @keyframes hero-sparkle-orbit {
-  0% { opacity: 0; transform: translate(0, -80px) scale(0); }
-  10% { opacity: 1; }
-  50% { opacity: 0.8; transform: translate(calc(60px * var(--si) / 4 - 60px), calc(-40px + 30px * var(--si) / 4)) scale(1); }
-  90% { opacity: 0.5; }
-  100% { opacity: 0; transform: translate(0, 80px) scale(0); }
+  0% {
+    opacity: 0;
+    transform: translate(0, -80px) scale(0);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: translate(calc(60px * var(--si) / 4 - 60px), calc(-40px + 30px * var(--si) / 4)) scale(1);
+  }
+
+  90% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, 80px) scale(0);
+  }
 }
 
 @keyframes bounce-down {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(12px); opacity: 1; }
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: translateY(12px);
+    opacity: 1;
+  }
 }
 
 /* ─── Prose Section ─── */
@@ -642,20 +617,35 @@ onUnmounted(() => {
 }
 
 @keyframes divider-sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-  25% { transform: scale(1.3) rotate(10deg); opacity: 1; }
-  50% { transform: scale(1) rotate(0deg); opacity: 0.8; }
-  75% { transform: scale(1.2) rotate(-10deg); opacity: 1; }
+
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+
+  25% {
+    transform: scale(1.3) rotate(10deg);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: scale(1.2) rotate(-10deg);
+    opacity: 1;
+  }
 }
 
 /* ─── Promise Section ─── */
 .promise {
   padding: 80px 40px;
-  background: linear-gradient(
-    to bottom,
-    var(--cream),
-    var(--blush)
-  );
+  background: linear-gradient(to bottom,
+      var(--cream),
+      var(--blush));
 }
 
 .promise__inner {
@@ -690,8 +680,17 @@ onUnmounted(() => {
 }
 
 @keyframes accent-glow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(244,63,94,0.3)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 20px rgba(244,63,94,0.6)); transform: scale(1.05); }
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.3));
+    transform: scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px rgba(244, 63, 94, 0.6));
+    transform: scale(1.05);
+  }
 }
 
 /* ─── Responsive ─── */
