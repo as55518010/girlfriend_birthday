@@ -19,11 +19,11 @@ const photos: GalleryPhoto[] = [
     { src: `${base}photos/dragon-boat.jpg`, alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
   { src: `${base}photos/houfeng_bikeway.jpg`, alt: '后里鐵馬道', caption: '后里馬場雙人協力車' },
   { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣', span: 'tall' },
-  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫', span: 'wide' },
-  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻'},
-  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台南的美好時光' },
+  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫', span: 'tall' },
+  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻',span: 'wide'},
+  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台南的美好時光',span: 'wide' },
   { src: `${base}photos/eyes_on_you.jpg`, alt: '眼中只有你', caption: '阿里山夕陽/日出下的浪漫', span: 'tall' },
-  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光', span: 'wide' },
+  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光', span: 'tall' },
 ]
 
 defineExpose({ photos })
