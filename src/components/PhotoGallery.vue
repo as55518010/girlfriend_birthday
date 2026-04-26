@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL
 const photos: GalleryPhoto[] = [
   { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫', span: 'wide' },
   { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天', span: 'tall' },
-  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光' },
   { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
   { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣', span: 'tall' },
 ]

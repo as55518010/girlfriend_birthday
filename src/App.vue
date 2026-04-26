@@ -45,12 +45,13 @@ const allPhotos: LightboxPhoto[] = [
   { src: `${base}photos/dragon-boat.jpg`, alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
   { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '日本看雪的約定' },
   { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻' },
-  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台南的美好時光' },
   { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫' },
   { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天' },
-  { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台中的美好時光' },
+  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光' },
   { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
   { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣' },
+  { src: `${base}photos/eyes_on_you.jpg`, alt: '眼中只有你', caption: '阿里山夕陽/日出下的浪漫' },
 ]
 
 /* Memory section images are indices 0–3, gallery images are 4–8 */
@@ -361,11 +362,11 @@ onUnmounted(() => {
         <span>✦</span>
       </div>
 
-      <!-- Memory: 台中時光 -->
+      <!-- Memory: 美好時光 -->
       <MemorySection
-        title="台中的美好時光"
-        :image-src="`${base}photos/temple.jpg`"
-        image-alt="寺廟合照"
+        title="美好時光"
+        :image-src="`${base}photos/sweet_birthday_moments.jpg`"
+        image-alt="生日當天"
         reverse
         @image-click="openMemoryPhoto(3)"
       >
