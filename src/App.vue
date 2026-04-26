@@ -43,15 +43,13 @@ const showFireworks = shallowRef(false)
 /* All photos in the page (for lightbox navigation) */
 const allPhotos: LightboxPhoto[] = [
   { src: `${base}photos/dragon-boat.jpg`, alt: '鹿港龍舟夜晚合照', caption: '台中遠距離的半年' },
-  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '日本看雪的約定' },
+  { src: `${base}photos/houfeng_bikeway.jpg`, alt: '后里鐵馬道', caption: '后里馬場雙人協力車' },
+  { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣' },
+  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫' },
   { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '哥哥婚禮的驕傲時刻' },
   { src: `${base}photos/temple.jpg`, alt: '寺廟合照', caption: '台南的美好時光' },
-  { src: `${base}photos/japan-snow.jpg`, alt: '日本雪景合照', caption: '初雪的浪漫' },
-  { src: `${base}photos/wedding.jpg`, alt: '婚禮合照', caption: '最帥的那一天' },
-  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光' },
-  { src: `${base}photos/dragon-boat.jpg`, alt: '龍舟合照', caption: '鹿港的夏夜' },
-  { src: `${base}photos/adventure.jpg`, alt: '台南鹽山合照', caption: '台南鹽山 — 一起登頂的勇氣' },
   { src: `${base}photos/eyes_on_you.jpg`, alt: '眼中只有你', caption: '阿里山夕陽/日出下的浪漫' },
+  { src: `${base}photos/sweet_birthday_moments.jpg`, alt: '生日當天', caption: '美好時光' },
 ]
 
 /* Memory section images are indices 0–3, gallery images are 4–8 */
@@ -333,7 +331,7 @@ onUnmounted(() => {
         :image-src="`${base}photos/japan-snow.jpg`"
         image-alt="日本雪景合照"
         reverse
-        @image-click="openMemoryPhoto(1)"
+        @image-click="openMemoryPhoto(3)"
       >
         <p>
           今年 1 月的<strong>日本之旅</strong>，是我第一次挑戰自由行。謝謝妳給我滿滿安全感，陪我一起規畫、一起看雪。妳說過：「看雪景就是要跟喜歡的人一起看」，那個人絕對就是妳了。
@@ -350,7 +348,7 @@ onUnmounted(() => {
         title="哥哥婚禮的驕傲時刻"
         :image-src="`${base}photos/wedding.jpg`"
         image-alt="婚禮合照"
-        @image-click="openMemoryPhoto(2)"
+        @image-click="openMemoryPhoto(4)"
       >
         <p>
           還有哥哥婚禮那天，我把人生<strong>第一次穿西裝</strong>的帥氣樣子獻給了妳。看著妳體貼地幫忙、順利融入我的家人，爸媽跟親戚私底下都超級喜歡妳，我真的感到很驕傲。
@@ -368,7 +366,7 @@ onUnmounted(() => {
         :image-src="`${base}photos/sweet_birthday_moments.jpg`"
         image-alt="生日當天"
         reverse
-        @image-click="openMemoryPhoto(3)"
+        @image-click="openMemoryPhoto(7)"
       >
         <p>
           從阿里山升級的「貴賓室」驚喜，到今天的海港下午茶與手作蛋糕，我只想盡我所能把最好的都給妳。身為講求 CP 值的理科男，妳就是我人生中<strong>報酬率最高的決定</strong>！
